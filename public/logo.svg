@@ -1,0 +1,43 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="pearlGradient" cx="30%" cy="30%">
+      <stop offset="0%" style="stop-color:#FF69B4;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#DA70D6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#9370DB;stop-opacity:1" />
+    </radialGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Main pearl circle -->
+  <circle cx="100" cy="100" r="70" fill="url(#pearlGradient)" filter="url(#glow)" />
+  
+  <!-- Pearl shine highlight -->
+  <ellipse cx="80" cy="75" rx="20" ry="30" fill="rgba(255,255,255,0.4)" transform="rotate(-20 80 75)" />
+  
+  <!-- Sparkle elements -->
+  <g fill="rgba(255,255,255,0.7)">
+    <!-- Sparkle 1 -->
+    <path d="M45 60 L50 65 L45 70 L40 65 Z" />
+    <path d="M42.5 62.5 L47.5 62.5 M45 60 L45 70" stroke="rgba(255,255,255,0.7)" stroke-width="1"/>
+    
+    <!-- Sparkle 2 -->
+    <path d="M155 45 L160 50 L155 55 L150 50 Z" />
+    <path d="M152.5 47.5 L157.5 47.5 M155 45 L155 55" stroke="rgba(255,255,255,0.7)" stroke-width="1"/>
+    
+    <!-- Sparkle 3 -->
+    <path d="M170 140 L175 145 L170 150 L165 145 Z" />
+    <path d="M167.5 142.5 L172.5 142.5 M170 140 L170 150" stroke="rgba(255,255,255,0.7)" stroke-width="1"/>
+    
+    <!-- Small sparkle 4 -->
+    <circle cx="35" cy="120" r="2" fill="rgba(255,255,255,0.6)" />
+    
+    <!-- Small sparkle 5 -->
+    <circle cx="165" cy="75" r="1.5" fill="rgba(255,255,255,0.6)" />
+  </g>
+</svg>

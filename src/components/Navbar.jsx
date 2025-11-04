@@ -38,8 +38,8 @@ const Navbar = ({ className = '' }) => {
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link to="/" className="flex items-center">
-              <img src="/logo.svg" alt="Pearl Clean Logo" className="h-10 w-10 mr-2" />
-              <span className="text-2xl font-bold text-gradient-pearl">{t('common.brandName')}</span>
+              <img src="/Pearl-clean-logo-icon.svg" alt="Pearl Clean Logo" className="h-10 w-10 mr-2" />
+              <img src="/Pearl-clean-logo-letters.svg" alt="Pearl Clean" className="h-8" />
             </Link>
           </div>
 

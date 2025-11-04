@@ -13,12 +13,8 @@ const MobileHeader = () => {
         
         {/* Center - Pearl Clean branding */}
         <Link to="/" className="flex items-center space-x-2">
-          <div className="h-8 w-8 flex items-center justify-center bg-gradient-to-r from-primary to-secondary rounded-full">
-            <span className="text-white font-bold text-sm">P</span>
-          </div>
-          <span className="text-gradient-pearl text-lg font-bold">
-            Pearl Clean
-          </span>
+          <img src="/Pearl-clean-logo-icon.svg" alt="Pearl Clean Logo" className="h-8 w-8" />
+          <img src="/Pearl-clean-logo-letters.svg" alt="Pearl Clean" className="h-6" />
         </Link>
         
         {/* Right - Language Switcher */}

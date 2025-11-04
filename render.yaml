@@ -1,0 +1,27 @@
+services:
+  # Backend API Service (JSON Server)
+  - type: web
+    name: pearl-clean-api
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+
+  # Frontend Static Site (React + Vite)
+  - type: web
+    name: pearl-clean-frontend
+    env: static
+    region: oregon
+    plan: free
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: VITE_API_BASE_URL
+        fromService:
+          type: web
+          name: pearl-clean-api
+          property: host

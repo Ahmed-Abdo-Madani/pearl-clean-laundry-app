@@ -1,15 +1,18 @@
 import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import LanguageSwitcher from './LanguageSwitcher'
 
-const Navbar = () => {
+const Navbar = ({ className = '' }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const { t } = useTranslation()
 
   const navigation = [
-    { name: 'Home', href: '/' },
-    { name: 'Services', href: '/services' },
-    { name: 'Book Now', href: '/booking' },
-    { name: 'My Orders', href: '/orders' },
-    { name: 'Track Order', href: '/track' }
+    { name: t('nav.home'), href: '/' },
+    { name: t('nav.services'), href: '/services' },
+    { name: t('nav.bookNow'), href: '/booking' },
+    { name: t('nav.myOrders'), href: '/orders' },
+    { name: t('nav.trackOrder'), href: '/track' }
   ]
 
   const getNavLinkClass = (isActive) => {
@@ -29,23 +32,23 @@ const Navbar = () => {
   }
 
   return (
-    <nav className="sticky top-0 z-50 bg-white shadow-md">
+    <nav className={`sticky top-0 z-50 bg-white shadow-md ${className}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link to="/" className="flex items-center">
               <img src="/logo.svg" alt="Pearl Clean Logo" className="h-10 w-10 mr-2" />
-              <span className="text-2xl font-bold text-gradient-pearl">Pearl Clean</span>
+              <span className="text-2xl font-bold text-gradient-pearl">{t('common.brandName')}</span>
             </Link>
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-8">
-              {navigation.map((item) => (
+          <div className="hidden md:flex items-center space-x-8">
+            <div className="flex items-baseline space-x-8">
+              {navigation.map((item, index) => (
                 <NavLink
-                  key={item.name}
+                  key={index}
                   to={item.href}
                   className={({ isActive }) => getNavLinkClass(isActive)}
                 >
@@ -53,10 +56,12 @@ const Navbar = () => {
                 </NavLink>
               ))}
             </div>
+            <LanguageSwitcher className="ml-4" />
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center space-x-2">
+            <LanguageSwitcher />
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-label="Toggle navigation"
@@ -95,9 +100,9 @@ const Navbar = () => {
       {isMenuOpen && (
         <div id="mobile-menu" className="md:hidden">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-t border-neutral-200">
-            {navigation.map((item) => (
+            {navigation.map((item, index) => (
               <NavLink
-                key={item.name}
+                key={index}
                 to={item.href}
                 className={({ isActive }) => getMobileNavLinkClass(isActive)}
                 onClick={() => setIsMenuOpen(false)}

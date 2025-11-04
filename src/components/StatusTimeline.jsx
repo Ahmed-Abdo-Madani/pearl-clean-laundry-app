@@ -1,34 +1,38 @@
+import { useTranslation } from 'react-i18next'
+
 const StatusTimeline = ({ currentStatus }) => {
+  const { t } = useTranslation()
+  
   const statusFlow = [
     { 
       key: 'scheduled', 
-      label: 'Scheduled', 
+      label: t('status.scheduled'), 
       icon: '📅',
-      description: 'Order placed'
+      description: t('status.scheduledDesc')
     },
     { 
       key: 'picked-up', 
-      label: 'Picked Up', 
+      label: t('status.pickedUp'), 
       icon: '🚗',
-      description: 'Items collected'
+      description: t('status.pickedUpDesc')
     },
     { 
       key: 'in-progress', 
-      label: 'In Progress', 
+      label: t('status.inProgress'), 
       icon: '🧺',
-      description: 'Being processed'
+      description: t('status.inProgressDesc')
     },
     { 
       key: 'ready', 
-      label: 'Ready', 
+      label: t('status.ready'), 
       icon: '✅',
-      description: 'Ready for delivery'
+      description: t('status.readyDesc')
     },
     { 
       key: 'delivered', 
-      label: 'Delivered', 
+      label: t('status.delivered'), 
       icon: '🏠',
-      description: 'Order completed'
+      description: t('status.deliveredDesc')
     }
   ]
 

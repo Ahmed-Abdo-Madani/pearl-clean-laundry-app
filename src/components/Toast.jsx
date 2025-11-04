@@ -42,18 +42,19 @@ const Toast = ({ message, type = 'info', isVisible, onClose, duration = 3000 }) 
   };
 
   return (
-    <div className="fixed top-4 right-4 z-50 animate-slideInRight">
+    <div className="fixed bottom-24 left-1/2 -translate-x-1/2 md:top-4 md:right-4 md:left-auto md:translate-x-0 z-50 animate-slideInRight mx-4 md:mx-0">
       <div className={`
         ${getTypeStyles()}
-        px-6 py-4 rounded-lg shadow-lg max-w-sm w-full sm:w-auto
-        flex items-center space-x-3
+        px-4 md:px-6 py-3 md:py-4 rounded-xl shadow-lg max-w-xs md:max-w-sm w-full
+        flex items-center space-x-2 md:space-x-3
         transform transition-all duration-300 ease-in-out
+        backdrop-blur-sm bg-opacity-95
       `}>
-        <span className="text-lg">{getIcon()}</span>
-        <p className="flex-1 text-sm font-medium">{message}</p>
+        <span className="text-base md:text-lg">{getIcon()}</span>
+        <p className="flex-1 text-sm md:text-sm font-medium">{message}</p>
         <button
           onClick={onClose}
-          className="text-white hover:text-gray-200 text-xl font-bold ml-2 flex-shrink-0"
+          className="text-white hover:text-gray-200 text-lg md:text-xl font-bold ml-2 flex-shrink-0 w-6 h-6 flex items-center justify-center"
           aria-label="Close notification"
         >
           ×

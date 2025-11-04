@@ -2,40 +2,47 @@
 export default {
   content: [
     "./index.html",
-    "./src/**/*.{js,jsx}"
+    "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
       colors: {
         primary: {
-          light: '#FFC0CB',
           DEFAULT: '#FF69B4',
-          dark: '#FF1493'
+          dark: '#E91E63',
+          light: '#FFB6C1'
         },
         secondary: {
-          light: '#E6E6FA',
-          DEFAULT: '#9370DB',
-          dark: '#8B008B'
+          DEFAULT: '#9C27B0',
+          dark: '#7B1FA2',
+          light: '#E1BEE7'
         },
         accent: {
-          pearl: '#F5F5F5',
-          gold: '#FFD700'
+          pearl: '#FFFBFE',
+          lavender: '#F3E5F5'
         },
         neutral: {
           50: '#FAFAFA',
           100: '#F5F5F5',
-          200: '#E5E5E5',
-          300: '#D4D4D4',
-          400: '#A3A3A3',
-          500: '#737373',
-          600: '#525252',
-          700: '#404040',
-          800: '#262626',
-          900: '#171717'
+          200: '#EEEEEE',
+          300: '#E0E0E0',
+          400: '#BDBDBD',
+          500: '#9E9E9E',
+          600: '#757575',
+          700: '#616161',
+          800: '#424242',
+          900: '#212121'
         }
       },
-      fontFamily: {
-        sans: ['Inter', 'Segoe UI', 'sans-serif']
+      spacing: {
+        'safe': 'env(safe-area-inset-bottom)',
+        'safe-top': 'env(safe-area-inset-top)',
+        '18': '4.5rem', // 72px for bottom nav height
+        '22': '5.5rem'  // 88px for combined spacing
+      },
+      boxShadow: {
+        'ios': '0 -2px 10px rgba(0, 0, 0, 0.08)',
+        'ios-card': '0 2px 8px rgba(0, 0, 0, 0.1)'
       }
     },
   },

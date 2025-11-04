@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import Layout from '../components/Layout.jsx'
 import OrderCard from '../components/OrderCard.jsx'
 import { getOrders } from '../services/api.js'
 
 const MyOrdersPage = () => {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   
   const [orders, setOrders] = useState([])
@@ -14,12 +16,12 @@ const MyOrdersPage = () => {
   const [error, setError] = useState('')
 
   const filterOptions = [
-    { key: 'all', label: 'All Orders' },
-    { key: 'scheduled', label: 'Scheduled' },
-    { key: 'picked-up', label: 'Picked Up' },
-    { key: 'in-progress', label: 'In Progress' },
-    { key: 'ready', label: 'Ready' },
-    { key: 'delivered', label: 'Delivered' }
+    { key: 'all', label: t('orders.allOrders') },
+    { key: 'scheduled', label: t('status.scheduled') },
+    { key: 'picked-up', label: t('status.pickedUp') },
+    { key: 'in-progress', label: t('status.inProgress') },
+    { key: 'ready', label: t('status.ready') },
+    { key: 'delivered', label: t('status.delivered') }
   ]
 
   useEffect(() => {
@@ -37,7 +39,7 @@ const MyOrdersPage = () => {
         setFilteredOrders(sortedOrders)
       } catch (error) {
         console.error('Error fetching orders:', error)
-        setError('Failed to load orders. Please try again later.')
+        setError(t('orders.loadError'))
       } finally {
         setLoading(false)
       }
@@ -70,15 +72,15 @@ const MyOrdersPage = () => {
 
   return (
     <Layout>
-      <div className="py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
+      <div className="min-h-screen bg-neutral-50 py-8 px-4 md:py-16">
+        <div className="max-w-6xl mx-auto">
           {/* Page Header */}
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold text-primary mb-6">
-              My Orders
+          <div className="text-center mb-6 md:mb-12">
+            <h1 className="text-2xl md:text-4xl font-bold text-primary mb-4 md:mb-6">
+              {t('orders.title')}
             </h1>
-            <p className="text-lg text-neutral-600 max-w-2xl mx-auto">
-              View and track all your laundry orders. Click on any order to see detailed progress information.
+            <p className="text-sm md:text-lg text-neutral-600 max-w-2xl mx-auto">
+              {t('orders.description')}
             </p>
           </div>
 
@@ -86,20 +88,20 @@ const MyOrdersPage = () => {
           {loading && (
             <div className="text-center py-12">
               <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary mb-4"></div>
-              <p className="text-neutral-600">Loading your orders...</p>
+              <p className="text-neutral-600 text-base">{t('orders.loading')}</p>
             </div>
           )}
 
           {/* Error State */}
           {error && (
             <div className="text-center py-12">
-              <div className="pearl-card max-w-md mx-auto bg-red-50 border-red-200">
+              <div className="ios-card p-6 max-w-md mx-auto bg-red-50 border-red-200">
                 <div className="text-4xl mb-4">❌</div>
-                <h3 className="text-xl font-semibold text-red-800 mb-2">Error Loading Orders</h3>
-                <p className="text-red-600 mb-4">{error}</p>
+                <h3 className="text-lg md:text-xl font-semibold text-red-800 mb-2">Error Loading Orders</h3>
+                <p className="text-red-600 mb-4 text-sm md:text-base">{error}</p>
                 <button 
                   onClick={() => window.location.reload()} 
-                  className="pearl-button"
+                  className="ios-button px-6 py-3 text-base font-semibold"
                 >
                   Try Again
                 </button>
@@ -111,16 +113,16 @@ const MyOrdersPage = () => {
           {!loading && !error && (
             <>
               {/* Filter Section */}
-              <div className="pearl-card mb-8">
-                <h2 className="text-xl font-semibold text-neutral-800 mb-4">Filter Orders</h2>
-                <div className="flex flex-wrap gap-2">
+              <div className="ios-card p-4 md:p-6 mb-6 md:mb-8">
+                <h2 className="text-lg md:text-xl font-semibold text-neutral-800 mb-4">Filter Orders</h2>
+                <div className="flex overflow-x-auto gap-2 pb-2">
                   {filterOptions.map((option) => (
                     <button
                       key={option.key}
                       onClick={() => handleFilterChange(option.key)}
-                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${
+                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 whitespace-nowrap ${
                         statusFilter === option.key
-                          ? 'bg-primary text-white'
+                          ? 'bg-primary text-white shadow-sm'
                           : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
                       }`}
                     >
@@ -135,24 +137,40 @@ const MyOrdersPage = () => {
 
               {/* Orders Grid */}
               {filteredOrders.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {filteredOrders.map((order) => (
-                    <OrderCard
-                      key={order.id}
-                      order={order}
-                      onViewDetails={handleViewDetails}
-                    />
-                  ))}
-                </div>
+                <>
+                  {/* Mobile List View */}
+                  <div className="md:hidden space-y-3">
+                    {filteredOrders.map((order) => (
+                      <OrderCard
+                        key={order.id}
+                        order={order}
+                        onViewDetails={handleViewDetails}
+                        variant="list"
+                      />
+                    ))}
+                  </div>
+                  
+                  {/* Desktop Grid View */}
+                  <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {filteredOrders.map((order) => (
+                      <OrderCard
+                        key={order.id}
+                        order={order}
+                        onViewDetails={handleViewDetails}
+                        variant="card"
+                      />
+                    ))}
+                  </div>
+                </>
               ) : (
                 /* Empty State */
                 <div className="text-center py-12">
-                  <div className="pearl-card max-w-md mx-auto">
+                  <div className="ios-card p-6 max-w-md mx-auto">
                     <div className="text-6xl mb-4">🧺</div>
-                    <h3 className="text-xl font-semibold text-neutral-800 mb-2">
+                    <h3 className="text-lg md:text-xl font-semibold text-neutral-800 mb-2">
                       {orders.length === 0 ? 'No Orders Yet' : 'No Orders Found'}
                     </h3>
-                    <p className="text-neutral-600 mb-6">
+                    <p className="text-neutral-600 mb-6 text-sm md:text-base">
                       {orders.length === 0 
                         ? 'Ready to experience Pearl Clean? Book your first service today!'
                         : `No orders found with "${statusFilter}" status. Try a different filter.`
@@ -161,7 +179,7 @@ const MyOrdersPage = () => {
                     {orders.length === 0 && (
                       <button
                         onClick={() => navigate('/booking')}
-                        className="pearl-button"
+                        className="ios-button px-6 py-3 text-base font-semibold"
                       >
                         Book Your First Service
                       </button>

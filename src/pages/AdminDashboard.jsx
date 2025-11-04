@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import LoginForm from '../components/LoginForm.jsx';
 import MetricsCard from '../components/MetricsCard.jsx';
 import OrdersTable from '../components/OrdersTable.jsx';
@@ -8,6 +9,7 @@ import { getOrders, updateOrderStatus } from '../services/api.js';
 import { useToast } from '../hooks/useToast.js';
 
 const AdminDashboard = () => {
+  const { t } = useTranslation();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [orders, setOrders] = useState([]);
   const [filteredOrders, setFilteredOrders] = useState([]);
@@ -53,7 +55,7 @@ const AdminDashboard = () => {
       const ordersData = await getOrders();
       setOrders(ordersData);
     } catch (err) {
-      setError('Failed to fetch orders. Please try again.');
+      setError(t('admin.fetchOrdersError'));
       console.error('Error fetching orders:', err);
     } finally {
       setLoading(false);
@@ -107,7 +109,7 @@ const AdminDashboard = () => {
 
   const handleLoginSuccess = () => {
     setIsAuthenticated(true);
-    showSuccess('Welcome to Pearl Clean Admin Dashboard');
+    showSuccess(t('admin.welcomeMessage'));
   };
 
   const handleLogout = () => {
@@ -117,16 +119,16 @@ const AdminDashboard = () => {
     setFilteredOrders([]);
     setSelectedCustomer(null);
     setShowCustomerModal(false);
-    showSuccess('Logged out successfully');
+    showSuccess(t('admin.loggedOut'));
   };
 
   const handleStatusUpdate = async (orderId, newStatus) => {
     try {
       await updateOrderStatus(orderId, newStatus);
-      showSuccess('Order status updated successfully');
+      showSuccess(t('admin.statusUpdated'));
       await fetchOrders(); // Refresh orders
     } catch (err) {
-      showError('Failed to update order status. Please try again.');
+      showError(t('admin.statusUpdateError'));
       console.error('Error updating order status:', err);
     }
   };
@@ -148,19 +150,19 @@ const AdminDashboard = () => {
   }
 
   const statusFilterOptions = [
-    { value: 'all', label: 'All' },
-    { value: 'scheduled', label: 'Scheduled' },
-    { value: 'picked-up', label: 'Picked Up' },
-    { value: 'in-progress', label: 'In Progress' },
-    { value: 'ready', label: 'Ready' },
-    { value: 'delivered', label: 'Delivered' }
+    { value: 'all', label: t('admin.allStatus') },
+    { value: 'scheduled', label: t('status.scheduled') },
+    { value: 'picked-up', label: t('status.pickedUp') },
+    { value: 'in-progress', label: t('status.inProgress') },
+    { value: 'ready', label: t('status.ready') },
+    { value: 'delivered', label: t('status.delivered') }
   ];
 
   const dateFilterOptions = [
-    { value: 'all', label: 'All Time' },
-    { value: 'today', label: 'Today' },
-    { value: 'week', label: 'This Week' },
-    { value: 'month', label: 'This Month' }
+    { value: 'all', label: t('admin.allTime') },
+    { value: 'today', label: t('admin.today') },
+    { value: 'week', label: t('admin.thisWeek') },
+    { value: 'month', label: t('admin.thisMonth') }
   ];
 
   return (
@@ -171,13 +173,13 @@ const AdminDashboard = () => {
           <div className="flex justify-between items-center py-6">
             <div>
               <h1 className="text-3xl font-bold text-primary">Pearl Clean</h1>
-              <p className="text-gray-600">Admin Dashboard</p>
+              <p className="text-gray-600">{t('admin.dashboard')}</p>
             </div>
             <button
               onClick={handleLogout}
               className="px-4 py-2 text-sm text-purple-600 hover:text-purple-800 font-medium border border-purple-300 rounded-lg hover:bg-purple-50 transition-colors"
             >
-              Logout
+              {t('admin.logout')}
             </button>
           </div>
         </div>
@@ -193,25 +195,25 @@ const AdminDashboard = () => {
         {/* Metrics Section */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           <MetricsCard
-            title="Total Orders"
+            title={t('admin.totalOrders')}
             value={metrics.total}
             icon="📊"
             color="primary"
           />
           <MetricsCard
-            title="Pending Pickups"
+            title={t('admin.pendingPickups')}
             value={metrics.pending}
             icon="📅"
             color="orange"
           />
           <MetricsCard
-            title="In Progress"
+            title={t('admin.inProgress')}
             value={metrics.inProgress}
             icon="🧺"
             color="purple"
           />
           <MetricsCard
-            title="Completed"
+            title={t('admin.completed')}
             value={metrics.completed}
             icon="✅"
             color="green"
@@ -220,11 +222,11 @@ const AdminDashboard = () => {
 
         {/* Filters Section */}
         <div className="pearl-card mb-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Filters</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">{t('admin.filters')}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Status Filter */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">{t('common.status')}</label>
               <div className="flex flex-wrap gap-2">
                 {statusFilterOptions.map(option => (
                   <button
@@ -244,7 +246,7 @@ const AdminDashboard = () => {
 
             {/* Date Filter */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Date Range</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">{t('admin.dateRange')}</label>
               <div className="flex flex-wrap gap-2">
                 {dateFilterOptions.map(option => (
                   <button
@@ -268,12 +270,12 @@ const AdminDashboard = () => {
         <div>
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-lg font-semibold text-gray-900">
-              Orders ({filteredOrders.length})
+              {t('admin.orders')} ({filteredOrders.length})
             </h2>
             {loading && (
               <div className="flex items-center space-x-2">
                 <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
-                <span className="text-sm text-gray-500">Loading...</span>
+                <span className="text-sm text-gray-500">{t('common.loading')}</span>
               </div>
             )}
           </div>

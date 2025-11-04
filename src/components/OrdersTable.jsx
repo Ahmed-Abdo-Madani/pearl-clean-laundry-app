@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import StatusBadge from './StatusBadge.jsx';
 
 const OrdersTable = ({ orders, onStatusUpdate, onViewCustomer }) => {
+  const { t } = useTranslation();
   const [selectedOrders, setSelectedOrders] = useState([]);
   const [sortConfig, setSortConfig] = useState({ key: 'pickupDate', direction: 'desc' });
 
@@ -55,7 +57,7 @@ const OrdersTable = ({ orders, onStatusUpdate, onViewCustomer }) => {
   if (orders.length === 0) {
     return (
       <div className="pearl-card text-center py-8">
-        <p className="text-gray-500">No orders found</p>
+        <p className="text-gray-500">{t('admin.noOrdersFound')}</p>
       </div>
     );
   }
@@ -71,31 +73,31 @@ const OrdersTable = ({ orders, onStatusUpdate, onViewCustomer }) => {
                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                 onClick={() => handleSort('id')}
               >
-                Order ID
+                {t('common.orderId')}
                 {sortConfig.key === 'id' && (
                   <span className="ml-1">{sortConfig.direction === 'asc' ? '↑' : '↓'}</span>
                 )}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Customer
+                {t('common.customer')}
               </th>
               <th 
                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                 onClick={() => handleSort('pickupDate')}
               >
-                Pickup Date
+                {t('booking.pickupDate')}
                 {sortConfig.key === 'pickupDate' && (
                   <span className="ml-1">{sortConfig.direction === 'asc' ? '↑' : '↓'}</span>
                 )}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Services
+                {t('common.services')}
               </th>
               <th 
                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                 onClick={() => handleSort('totalPrice')}
               >
-                Total
+                {t('common.total')}
                 {sortConfig.key === 'totalPrice' && (
                   <span className="ml-1">{sortConfig.direction === 'asc' ? '↑' : '↓'}</span>
                 )}
@@ -104,13 +106,13 @@ const OrdersTable = ({ orders, onStatusUpdate, onViewCustomer }) => {
                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                 onClick={() => handleSort('status')}
               >
-                Status
+                {t('common.status')}
                 {sortConfig.key === 'status' && (
                   <span className="ml-1">{sortConfig.direction === 'asc' ? '↑' : '↓'}</span>
                 )}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Actions
+                {t('admin.actions')}
               </th>
             </tr>
           </thead>
@@ -127,7 +129,7 @@ const OrdersTable = ({ orders, onStatusUpdate, onViewCustomer }) => {
                   {new Date(order.pickupDate).toLocaleDateString()}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {order.services?.length || 0} items
+                  {order.services?.length || 0} {t('admin.items')}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                   ${order.totalPrice}
@@ -143,7 +145,7 @@ const OrdersTable = ({ orders, onStatusUpdate, onViewCustomer }) => {
                   >
                     {statusOptions.map(status => (
                       <option key={status} value={status}>
-                        {status.charAt(0).toUpperCase() + status.slice(1).replace('-', ' ')}
+                        {t(`status.${status.replace('-', '')}`)}
                       </option>
                     ))}
                   </select>
@@ -151,7 +153,7 @@ const OrdersTable = ({ orders, onStatusUpdate, onViewCustomer }) => {
                     onClick={() => onViewCustomer(order)}
                     className="text-purple-600 hover:text-purple-800 font-medium"
                   >
-                    View Customer
+                    {t('admin.viewCustomer')}
                   </button>
                 </td>
               </tr>
@@ -169,10 +171,10 @@ const OrdersTable = ({ orders, onStatusUpdate, onViewCustomer }) => {
               <StatusBadge status={order.status} />
             </div>
             <div className="space-y-2 text-sm text-gray-600">
-              <p><span className="font-medium">Customer:</span> {order.customerName}</p>
-              <p><span className="font-medium">Pickup:</span> {new Date(order.pickupDate).toLocaleDateString()}</p>
-              <p><span className="font-medium">Items:</span> {order.services?.length || 0}</p>
-              <p><span className="font-medium">Total:</span> ${order.totalPrice}</p>
+              <p><span className="font-medium">{t('common.customer')}:</span> {order.customerName}</p>
+              <p><span className="font-medium">{t('booking.pickup')}:</span> {new Date(order.pickupDate).toLocaleDateString()}</p>
+              <p><span className="font-medium">{t('admin.items')}:</span> {order.services?.length || 0}</p>
+              <p><span className="font-medium">{t('common.total')}:</span> ${order.totalPrice}</p>
             </div>
             <div className="mt-3 flex flex-col space-y-2">
               <select
@@ -182,7 +184,7 @@ const OrdersTable = ({ orders, onStatusUpdate, onViewCustomer }) => {
               >
                 {statusOptions.map(status => (
                   <option key={status} value={status}>
-                    {status.charAt(0).toUpperCase() + status.slice(1).replace('-', ' ')}
+                    {t(`status.${status.replace('-', '')}`)}
                   </option>
                 ))}
               </select>
@@ -190,7 +192,7 @@ const OrdersTable = ({ orders, onStatusUpdate, onViewCustomer }) => {
                 onClick={() => onViewCustomer(order)}
                 className="w-full text-purple-600 hover:text-purple-800 font-medium text-sm py-2 border border-purple-300 rounded hover:bg-purple-50 transition-colors"
               >
-                View Customer
+                {t('admin.viewCustomer')}
               </button>
             </div>
           </div>

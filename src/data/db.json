@@ -3,50 +3,68 @@
     {
       "id": 1,
       "name": "Wash & Fold",
+      "nameAr": "غسيل وطي",
       "description": "Professional washing and folding service for everyday clothes",
+      "descriptionAr": "خدمة غسيل وطي احترافية للملابس اليومية",
       "price": 25,
       "icon": "👕",
-      "duration": "24-48 hours"
+      "duration": "24-48 hours",
+      "durationAr": "24-48 ساعة"
     },
     {
       "id": 2,
       "name": "Dry Cleaning",
+      "nameAr": "تنظيف جاف",
       "description": "Premium dry cleaning for delicate fabrics and formal wear",
+      "descriptionAr": "تنظيف جاف مميز للأقمشة الرقيقة والملابس الرسمية",
       "price": 45,
       "icon": "👗",
-      "duration": "2-3 days"
+      "duration": "2-3 days",
+      "durationAr": "2-3 أيام"
     },
     {
       "id": 3,
       "name": "Ironing & Pressing",
+      "nameAr": "كوي وكبس",
       "description": "Professional ironing and pressing for wrinkle-free garments",
+      "descriptionAr": "كوي وكبس احترافي للملابس الخالية من التجاعيد",
       "price": 20,
       "icon": "🔥",
-      "duration": "Same day"
+      "duration": "Same day",
+      "durationAr": "نفس اليوم"
     },
     {
       "id": 4,
       "name": "Stain Removal",
+      "nameAr": "إزالة البقع",
       "description": "Specialized treatment for tough stains and spots",
+      "descriptionAr": "معالجة متخصصة للبقع الصعبة والعنيدة",
       "price": 15,
       "icon": "✨",
-      "duration": "1-2 days"
+      "duration": "1-2 days",
+      "durationAr": "1-2 يوم"
     },
     {
       "id": 5,
       "name": "Delicate Care",
+      "nameAr": "العناية الرقيقة",
       "description": "Gentle care for silk, lace, and luxury fabrics",
+      "descriptionAr": "عناية رقيقة للحرير والدانتيل والأقمشة الفاخرة",
       "price": 35,
       "icon": "🌸",
-      "duration": "3-4 days"
+      "duration": "3-4 days",
+      "durationAr": "3-4 أيام"
     },
     {
       "id": 6,
       "name": "Express Service",
+      "nameAr": "الخدمة السريعة",
       "description": "Same-day service for urgent laundry needs",
+      "descriptionAr": "خدمة نفس اليوم لاحتياجات الغسيل العاجلة",
       "price": 55,
       "icon": "⚡",
-      "duration": "4-6 hours"
+      "duration": "4-6 hours",
+      "durationAr": "4-6 ساعات"
     }
   ],
   "orders": [

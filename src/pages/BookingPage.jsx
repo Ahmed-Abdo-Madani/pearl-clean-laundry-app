@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import Layout from '../components/Layout.jsx'
 import OrderConfirmationModal from '../components/OrderConfirmationModal.jsx'
 import { getServices, createOrder } from '../services/api.js'
 import { useToast } from '../hooks/useToast.js'
 
 const BookingPage = () => {
+  const { t } = useTranslation()
   const location = useLocation()
   const navigate = useNavigate()
   const preSelectedService = location.state?.selectedService
@@ -153,7 +155,7 @@ const BookingPage = () => {
 
         // Create order via API
         const createdOrder = await createOrder(orderData)
-        showSuccess('Booking confirmed! Your order has been scheduled.')
+        showSuccess(t('booking.confirmationSuccess'))
         setConfirmedOrder(createdOrder)
         
         // Clear any previous errors
@@ -161,7 +163,7 @@ const BookingPage = () => {
         
       } catch (error) {
         console.error('Error creating order:', error)
-        showError('Failed to create booking. Please try again.')
+        showError(t('booking.createError'))
       } finally {
         setSubmitting(false)
       }
@@ -187,7 +189,7 @@ const BookingPage = () => {
         <div className="py-16 px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center">
             <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary mb-4"></div>
-            <p className="text-neutral-600">Loading booking form...</p>
+            <p className="text-neutral-600">{t('booking.loading')}</p>
           </div>
         </div>
       </Layout>
@@ -196,22 +198,22 @@ const BookingPage = () => {
 
   return (
     <Layout>
-      <div className="py-16 px-4 sm:px-6 lg:px-8">
+      <div className="py-8 px-4 md:py-16">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-gradient-pearl mb-4">
-              Book Your Service
+          <div className="text-center mb-8 md:mb-12">
+            <h1 className="text-2xl md:text-4xl font-bold text-gradient-pearl mb-4">
+              {t('booking.title')}
             </h1>
-            <p className="text-lg text-neutral-600 max-w-2xl mx-auto">
+            <p className="text-base md:text-lg text-neutral-600 max-w-2xl mx-auto">
               Schedule your laundry pickup and let us take care of your garments with professional expertise.
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-8">
+          <form onSubmit={handleSubmit} className="space-y-6 md:space-y-8">
             {/* Customer Information */}
-            <div className="pearl-card">
-              <h2 className="text-2xl font-semibold text-primary mb-6">Customer Information</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="ios-card p-4 md:p-6">
+              <h2 className="text-xl md:text-2xl font-semibold text-primary mb-4 md:mb-6">{t('booking.customerInformation')}</h2>
+              <div className="grid grid-cols-1 gap-4 md:gap-6">
                 <div>
                   <label htmlFor="customerName" className="block text-sm font-medium text-neutral-700 mb-2">
                     Full Name *
@@ -222,7 +224,7 @@ const BookingPage = () => {
                     name="customerName"
                     value={formData.customerName}
                     onChange={handleInputChange}
-                    className={`pearl-input ${errors.customerName ? 'border-red-500' : ''}`}
+                    className={`pearl-input py-3 text-base md:text-sm ${errors.customerName ? 'border-red-500' : ''}`}
                     placeholder="Enter your full name"
                   />
                   {errors.customerName && <p className="text-red-500 text-sm mt-1">{errors.customerName}</p>}
@@ -238,13 +240,13 @@ const BookingPage = () => {
                     name="customerPhone"
                     value={formData.customerPhone}
                     onChange={handleInputChange}
-                    className={`pearl-input ${errors.customerPhone ? 'border-red-500' : ''}`}
+                    className={`pearl-input py-3 text-base md:text-sm ${errors.customerPhone ? 'border-red-500' : ''}`}
                     placeholder="(555) 123-4567"
                   />
                   {errors.customerPhone && <p className="text-red-500 text-sm mt-1">{errors.customerPhone}</p>}
                 </div>
 
-                <div className="md:col-span-2">
+                <div className="col-span-1">
                   <label htmlFor="address" className="block text-sm font-medium text-neutral-700 mb-2">
                     Pickup Address *
                   </label>
@@ -254,7 +256,7 @@ const BookingPage = () => {
                     value={formData.address}
                     onChange={handleInputChange}
                     rows={3}
-                    className={`pearl-input ${errors.address ? 'border-red-500' : ''}`}
+                    className={`pearl-input py-3 text-base md:text-sm resize-none ${errors.address ? 'border-red-500' : ''}`}
                     placeholder="Enter your complete address including apartment/unit number"
                   />
                   {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address}</p>}
@@ -263,40 +265,44 @@ const BookingPage = () => {
             </div>
 
             {/* Service Selection */}
-            <div className="pearl-card">
-              <h2 className="text-2xl font-semibold text-primary mb-6">Select Services</h2>
+            <div className="ios-card p-4 md:p-6">
+              <h2 className="text-lg md:text-2xl font-semibold text-neutral-800 mb-4 md:mb-6">Select Services</h2>
               {errors.selectedServices && <p className="text-red-500 text-sm mb-4">{errors.selectedServices}</p>}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-3 md:gap-4">
                 {services.map((service) => (
                   <div
                     key={service.id}
-                    className={`border rounded-lg p-4 transition-all duration-200 ${
+                    className={`border rounded-xl p-4 transition-all duration-200 cursor-pointer ${
                       formData.selectedServices.includes(service.id)
-                        ? 'border-primary bg-primary/5'
-                        : 'border-neutral-300 hover:border-primary/50'
+                        ? 'border-primary bg-primary/5 shadow-sm'
+                        : 'border-neutral-200 hover:border-primary/50 hover:shadow-sm'
                     }`}
+                    onClick={() => handleServiceToggle(service.id)}
                   >
-                    <div className="flex items-center">
-                      <label className="flex items-center cursor-pointer flex-1">
-                        <input
-                          type="checkbox"
-                          checked={formData.selectedServices.includes(service.id)}
-                          onChange={() => handleServiceToggle(service.id)}
-                          className="mr-3 h-4 w-4 text-primary"
-                        />
-                        <div className="flex-1">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center">
-                              <span className="text-2xl mr-2">{service.icon}</span>
-                              <div>
-                                <h3 className="font-semibold text-neutral-800">{service.name}</h3>
-                                <p className="text-sm text-neutral-600">{service.duration}</p>
-                              </div>
-                            </div>
-                            <span className="font-bold text-primary">${service.price.toFixed(2)}</span>
-                          </div>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center flex-1">
+                        <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mr-3">
+                          <span className="text-lg">{service.icon}</span>
                         </div>
-                      </label>
+                        <div className="flex-1">
+                          <h3 className="font-semibold text-neutral-800 text-base">{service.name}</h3>
+                          <p className="text-sm text-neutral-600">{service.duration}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center">
+                        <span className="font-bold text-primary text-lg mr-3">${service.price.toFixed(2)}</span>
+                        <div className={`w-5 h-5 rounded border-2 flex items-center justify-center ${
+                          formData.selectedServices.includes(service.id)
+                            ? 'bg-primary border-primary'
+                            : 'border-neutral-300'
+                        }`}>
+                          {formData.selectedServices.includes(service.id) && (
+                            <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                            </svg>
+                          )}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -304,9 +310,9 @@ const BookingPage = () => {
             </div>
 
             {/* Pickup Schedule */}
-            <div className="pearl-card">
-              <h2 className="text-2xl font-semibold text-primary mb-6">Pickup Schedule</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="ios-card p-4 md:p-6">
+              <h2 className="text-lg md:text-2xl font-semibold text-neutral-800 mb-4 md:mb-6">{t('booking.pickupSchedule')}</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                 <div>
                   <label htmlFor="pickupDate" className="block text-sm font-medium text-neutral-700 mb-2">
                     Pickup Date *
@@ -318,7 +324,7 @@ const BookingPage = () => {
                     value={formData.pickupDate}
                     onChange={handleInputChange}
                     min={new Date().toISOString().split('T')[0]}
-                    className={`pearl-input ${errors.pickupDate ? 'border-red-500' : ''}`}
+                    className={`pearl-input py-3 text-base md:text-sm ${errors.pickupDate ? 'border-red-500' : ''}`}
                   />
                   {errors.pickupDate && <p className="text-red-500 text-sm mt-1">{errors.pickupDate}</p>}
                 </div>
@@ -332,7 +338,7 @@ const BookingPage = () => {
                     name="pickupTime"
                     value={formData.pickupTime}
                     onChange={handleInputChange}
-                    className={`pearl-input ${errors.pickupTime ? 'border-red-500' : ''}`}
+                    className={`pearl-input py-3 text-base md:text-sm ${errors.pickupTime ? 'border-red-500' : ''}`}
                   >
                     <option value="">Select time</option>
                     {timeSlots.map((time) => (
@@ -345,21 +351,21 @@ const BookingPage = () => {
             </div>
 
             {/* Order Summary */}
-            <div className="pearl-card bg-primary/5 border-primary/20">
-              <h2 className="text-2xl font-semibold text-primary mb-4">Order Summary</h2>
-              <div className="space-y-2">
+            <div className="ios-card p-4 md:p-6 bg-primary/5 border-primary/20">
+              <h2 className="text-lg md:text-2xl font-semibold text-primary mb-4">{t('booking.orderSummary')}</h2>
+              <div className="space-y-3">
                 {formData.selectedServices.map(serviceId => {
                   const service = services.find(s => s.id === serviceId)
                   return service ? (
-                    <div key={serviceId} className="flex justify-between items-center">
-                      <span className="text-neutral-700">{service.name}</span>
-                      <span className="font-semibold">${service.price.toFixed(2)}</span>
+                    <div key={serviceId} className="flex justify-between items-center py-2">
+                      <span className="text-neutral-700 text-base">{service.name}</span>
+                      <span className="font-semibold text-base">${service.price.toFixed(2)}</span>
                     </div>
                   ) : null
                 })}
                 {formData.selectedServices.length > 0 && (
-                  <div className="border-t pt-2 mt-4">
-                    <div className="flex justify-between items-center text-lg font-bold text-primary">
+                  <div className="border-t border-primary/20 pt-3 mt-4">
+                    <div className="flex justify-between items-center text-lg md:text-xl font-bold text-primary">
                       <span>Total</span>
                       <span>${totalPrice.toFixed(2)}</span>
                     </div>
@@ -369,13 +375,13 @@ const BookingPage = () => {
             </div>
 
             {/* Submit Button */}
-            <div className="text-center">
+            <div className="text-center pt-4">
               <button
                 type="submit"
-                className="pearl-button text-lg px-12 py-4"
+                className="ios-button w-full md:w-auto text-lg px-8 md:px-12 py-4 font-semibold"
                 disabled={submitting}
               >
-                {submitting ? 'Submitting...' : 'Schedule Pickup'}
+                {submitting ? t('booking.submitting') : t('booking.schedulePickup')}
               </button>
             </div>
           </form>

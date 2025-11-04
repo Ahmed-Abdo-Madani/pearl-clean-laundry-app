@@ -1,24 +1,28 @@
+import { useTranslation } from 'react-i18next'
+
 const StatusBadge = ({ status, size = 'medium' }) => {
+  const { t } = useTranslation()
+  
   const statusConfig = {
     'scheduled': {
       color: 'bg-blue-100 text-blue-800 border-blue-200',
-      label: 'Scheduled'
+      label: t('status.scheduled')
     },
     'picked-up': {
       color: 'bg-yellow-100 text-yellow-800 border-yellow-200',
-      label: 'Picked Up'
+      label: t('status.pickedUp')
     },
     'in-progress': {
       color: 'bg-purple-100 text-purple-800 border-purple-200',
-      label: 'In Progress'
+      label: t('status.inProgress')
     },
     'ready': {
       color: 'bg-green-100 text-green-800 border-green-200',
-      label: 'Ready'
+      label: t('status.ready')
     },
     'delivered': {
       color: 'bg-gray-100 text-gray-800 border-gray-200',
-      label: 'Delivered'
+      label: t('status.delivered')
     }
   }
 

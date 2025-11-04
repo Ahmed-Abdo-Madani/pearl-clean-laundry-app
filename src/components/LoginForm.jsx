@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const LoginForm = ({ onLoginSuccess }) => {
+  const { t } = useTranslation();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -16,7 +18,7 @@ const LoginForm = ({ onLoginSuccess }) => {
       localStorage.setItem('adminAuth', 'true');
       onLoginSuccess();
     } else {
-      setError('Invalid credentials. Please try again.');
+      setError(t('admin.invalidCredentials'));
     }
     
     setLoading(false);
@@ -28,13 +30,13 @@ const LoginForm = ({ onLoginSuccess }) => {
         {/* Pearl Clean Branding */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-primary mb-2">Pearl Clean</h1>
-          <p className="text-purple-600 text-sm">Admin Dashboard</p>
+          <p className="text-purple-600 text-sm">{t('admin.dashboard')}</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
-              Username
+              {t('admin.username')}
             </label>
             <input
               id="username"
@@ -42,14 +44,14 @@ const LoginForm = ({ onLoginSuccess }) => {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               className="pearl-input"
-              placeholder="Enter username"
+              placeholder={t('admin.enterUsername')}
               required
             />
           </div>
 
           <div>
             <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-              Password
+              {t('admin.password')}
             </label>
             <input
               id="password"
@@ -57,7 +59,7 @@ const LoginForm = ({ onLoginSuccess }) => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="pearl-input"
-              placeholder="Enter password"
+              placeholder={t('admin.enterPassword')}
               required
             />
           </div>
@@ -73,13 +75,13 @@ const LoginForm = ({ onLoginSuccess }) => {
             disabled={loading}
             className="pearl-button w-full"
           >
-            {loading ? 'Logging in...' : 'Login'}
+            {loading ? t('admin.loggingIn') : t('admin.login')}
           </button>
         </form>
 
         <div className="mt-6 text-center">
           <p className="text-xs text-gray-500">
-            Demo credentials: admin / pearl123
+            {t('admin.demoCredentials')}: admin / pearl123
           </p>
         </div>
       </div>

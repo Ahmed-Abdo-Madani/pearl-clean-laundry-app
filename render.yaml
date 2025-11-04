@@ -22,4 +22,4 @@ services:
         fromService:
           type: web
           name: pearl-clean-api
-          property: host
+          property: hostURL

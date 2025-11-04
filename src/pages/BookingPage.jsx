@@ -88,36 +88,36 @@ const BookingPage = () => {
     const newErrors = {}
 
     if (!formData.customerName.trim()) {
-      newErrors.customerName = 'Name is required'
+      newErrors.customerName = t('booking.nameRequired')
     }
 
     if (!formData.customerPhone.trim()) {
-      newErrors.customerPhone = 'Phone number is required'
+      newErrors.customerPhone = t('booking.phoneRequired')
     } else if (!/^\+?[\d\s\-\(\)]{10,}$/.test(formData.customerPhone)) {
-      newErrors.customerPhone = 'Please enter a valid phone number'
+      newErrors.customerPhone = t('booking.phoneInvalid')
     }
 
     if (!formData.address.trim()) {
-      newErrors.address = 'Address is required'
+      newErrors.address = t('booking.addressRequired')
     }
 
     if (formData.selectedServices.length === 0) {
-      newErrors.selectedServices = 'Please select at least one service'
+      newErrors.selectedServices = t('booking.serviceRequired')
     }
 
     if (!formData.pickupDate) {
-      newErrors.pickupDate = 'Pickup date is required'
+      newErrors.pickupDate = t('booking.dateRequired')
     } else {
       const selectedDate = new Date(formData.pickupDate)
       const today = new Date()
       today.setHours(0, 0, 0, 0)
       if (selectedDate < today) {
-        newErrors.pickupDate = 'Pickup date cannot be in the past'
+        newErrors.pickupDate = t('booking.dateInvalid')
       }
     }
 
     if (!formData.pickupTime) {
-      newErrors.pickupTime = 'Pickup time is required'
+      newErrors.pickupTime = t('booking.timeRequired')
     }
 
     setErrors(newErrors)
@@ -205,7 +205,7 @@ const BookingPage = () => {
               {t('booking.title')}
             </h1>
             <p className="text-base md:text-lg text-neutral-600 max-w-2xl mx-auto">
-              Schedule your laundry pickup and let us take care of your garments with professional expertise.
+              {t('booking.description')}
             </p>
           </div>
 
@@ -216,7 +216,7 @@ const BookingPage = () => {
               <div className="grid grid-cols-1 gap-4 md:gap-6">
                 <div>
                   <label htmlFor="customerName" className="block text-sm font-medium text-neutral-700 mb-2">
-                    Full Name *
+                    {t('booking.fullName')}
                   </label>
                   <input
                     type="text"
@@ -225,14 +225,14 @@ const BookingPage = () => {
                     value={formData.customerName}
                     onChange={handleInputChange}
                     className={`pearl-input py-3 text-base md:text-sm ${errors.customerName ? 'border-red-500' : ''}`}
-                    placeholder="Enter your full name"
+                    placeholder={t('booking.fullNamePlaceholder')}
                   />
                   {errors.customerName && <p className="text-red-500 text-sm mt-1">{errors.customerName}</p>}
                 </div>
 
                 <div>
                   <label htmlFor="customerPhone" className="block text-sm font-medium text-neutral-700 mb-2">
-                    Phone Number *
+                    {t('booking.phoneNumber')}
                   </label>
                   <input
                     type="tel"
@@ -241,14 +241,14 @@ const BookingPage = () => {
                     value={formData.customerPhone}
                     onChange={handleInputChange}
                     className={`pearl-input py-3 text-base md:text-sm ${errors.customerPhone ? 'border-red-500' : ''}`}
-                    placeholder="(555) 123-4567"
+                    placeholder={t('booking.phonePlaceholder')}
                   />
                   {errors.customerPhone && <p className="text-red-500 text-sm mt-1">{errors.customerPhone}</p>}
                 </div>
 
                 <div className="col-span-1">
                   <label htmlFor="address" className="block text-sm font-medium text-neutral-700 mb-2">
-                    Pickup Address *
+                    {t('booking.pickupAddress')}
                   </label>
                   <textarea
                     id="address"
@@ -257,7 +257,7 @@ const BookingPage = () => {
                     onChange={handleInputChange}
                     rows={3}
                     className={`pearl-input py-3 text-base md:text-sm resize-none ${errors.address ? 'border-red-500' : ''}`}
-                    placeholder="Enter your complete address including apartment/unit number"
+                    placeholder={t('booking.addressPlaceholder')}
                   />
                   {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address}</p>}
                 </div>
@@ -266,7 +266,7 @@ const BookingPage = () => {
 
             {/* Service Selection */}
             <div className="ios-card p-4 md:p-6">
-              <h2 className="text-lg md:text-2xl font-semibold text-neutral-800 mb-4 md:mb-6">Select Services</h2>
+              <h2 className="text-lg md:text-2xl font-semibold text-neutral-800 mb-4 md:mb-6">{t('booking.selectServices')}</h2>
               {errors.selectedServices && <p className="text-red-500 text-sm mb-4">{errors.selectedServices}</p>}
               <div className="grid grid-cols-1 gap-3 md:gap-4">
                 {services.map((service) => (
@@ -315,7 +315,7 @@ const BookingPage = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                 <div>
                   <label htmlFor="pickupDate" className="block text-sm font-medium text-neutral-700 mb-2">
-                    Pickup Date *
+                    {t('booking.pickupDate')}
                   </label>
                   <input
                     type="date"
@@ -331,7 +331,7 @@ const BookingPage = () => {
 
                 <div>
                   <label htmlFor="pickupTime" className="block text-sm font-medium text-neutral-700 mb-2">
-                    Pickup Time *
+                    {t('booking.pickupTime')}
                   </label>
                   <select
                     id="pickupTime"
@@ -340,7 +340,7 @@ const BookingPage = () => {
                     onChange={handleInputChange}
                     className={`pearl-input py-3 text-base md:text-sm ${errors.pickupTime ? 'border-red-500' : ''}`}
                   >
-                    <option value="">Select time</option>
+                    <option value="">{t('booking.selectTime')}</option>
                     {timeSlots.map((time) => (
                       <option key={time} value={time}>{time}</option>
                     ))}
@@ -366,7 +366,7 @@ const BookingPage = () => {
                 {formData.selectedServices.length > 0 && (
                   <div className="border-t border-primary/20 pt-3 mt-4">
                     <div className="flex justify-between items-center text-lg md:text-xl font-bold text-primary">
-                      <span>Total</span>
+                      <span>{t('booking.total')}</span>
                       <span>${totalPrice.toFixed(2)}</span>
                     </div>
                   </div>
